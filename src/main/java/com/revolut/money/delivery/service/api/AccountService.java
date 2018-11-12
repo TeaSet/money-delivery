@@ -2,6 +2,7 @@ package com.revolut.money.delivery.service.api;
 
 import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.Money;
+import io.vertx.ext.web.RoutingContext;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface AccountService {
 
     Account getAccountById(Long accountId);
 
-    List<Account> getAllAccounts();
+    void getAllAccounts(RoutingContext context);
 
     void removeAccount(Long accountId);
 
