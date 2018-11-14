@@ -1,29 +1,19 @@
 package com.revolut.money.delivery.service.api;
 
 import com.revolut.money.delivery.model.Account;
+import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
-import io.vertx.ext.web.RoutingContext;
-
-import java.util.List;
 
 public interface AccountService {
 
-    Account createAccount();
+    AccountId createAccount(String accountHolder, Money money);
 
-    Account getAccountById(Long accountId);
+    Account getAccount(AccountId accountId);
 
-    void getAllAccounts(RoutingContext context);
+    void removeAccount(AccountId accountId);
 
-    void removeAccount(Long accountId);
+    void lockAccount(AccountId accountId);
 
-    Money getCurrentBalance(Long accountId);
-
-    void transferFund(Long accountId, Money money);
-
-    void withdrawFund(Long accountId, Money money);
-
-    void depositFund(Long accountId, Money money);
-
-
+    void unlockAccount(AccountId accountId);
 
 }

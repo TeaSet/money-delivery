@@ -1,26 +1,28 @@
 package com.revolut.money.delivery.model;
 
-import io.vertx.core.json.JsonObject;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Account {
 
-    private Long accountId;
+    private AccountId accountId;
 
-    private Money balance;
+    private Money money;
 
     private boolean isLocked;
 
-    public Account(JsonObject jsonObject) {
-        this.accountId = jsonObject.getLong("accountId");
-        this.balance = new Money(new BigDecimal(jsonObject.getString("amount")), jsonObject.getString("currency"));
-        this.isLocked = jsonObject.getBoolean("isLocked");
+    public Account(AccountId accountId, Money money) {
+        this.accountId = accountId;
+        this.money = money;
+        this.isLocked = false;
+    }
+
+    public Account(String accountHolder, double amount, String currencyCode) {
+        this.accountId = new AccountId(accountHolder);
+        this.money = new Money(amount, currencyCode);
+        this.isLocked = false;
     }
 }
