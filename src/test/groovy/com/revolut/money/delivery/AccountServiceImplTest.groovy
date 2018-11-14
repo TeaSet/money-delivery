@@ -1,5 +1,6 @@
 package com.revolut.money.delivery
 
+import com.revolut.money.delivery.datastore.DataStoreImpl
 import com.revolut.money.delivery.model.Account
 import com.revolut.money.delivery.model.AccountId
 import com.revolut.money.delivery.model.Money
@@ -14,6 +15,10 @@ class AccountServiceImplTest extends Specification {
 
     @Shared
     def money = new Money(100.5, "USD")
+
+    def setupSpec() {
+        accountService.setDataStore(new DataStoreImpl())
+    }
 
     def "create new account"() {
         when:

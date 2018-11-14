@@ -1,9 +1,11 @@
 package com.revolut.money.delivery.controller;
 
+import com.google.inject.Guice;
+import com.revolut.money.delivery.di.ApplicationInjectorModule;
 import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
-import com.revolut.money.delivery.service.impl.AccountServiceImpl;
+import com.revolut.money.delivery.service.api.AccountService;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -11,10 +13,10 @@ import io.vertx.ext.web.RoutingContext;
 
 public class AccountManagementController {
 
-    private AccountServiceImpl accountService;
+    private final AccountService accountService;
 
     public AccountManagementController() {
-        this.accountService = new AccountServiceImpl();
+        accountService = Guice.createInjector(new ApplicationInjectorModule()).getInstance(AccountService.class);
     }
 
     public void getAccount(RoutingContext context) {

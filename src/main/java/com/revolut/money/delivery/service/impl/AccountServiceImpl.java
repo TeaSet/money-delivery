@@ -1,18 +1,21 @@
 package com.revolut.money.delivery.service.impl;
 
-import com.revolut.money.delivery.datastore.DataStore;
+import com.revolut.money.delivery.datastore.api.DataStore;
 import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
 import com.revolut.money.delivery.service.api.AccountService;
+
+import javax.inject.Inject;
 
 
 public class AccountServiceImpl implements AccountService {
 
     private DataStore dataStore;
 
-    public AccountServiceImpl() {
-        this.dataStore = new DataStore();
+    @Inject
+    public void setDataStore(DataStore dataStore) {
+        this.dataStore = dataStore;
     }
 
     @Override
