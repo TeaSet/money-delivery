@@ -21,4 +21,12 @@ public class AccountId {
         this.accountHolder = accountHolder;
         this.accountNum = accountNum;
     }
+
+    @Override
+    public String toString() {
+        return "AccountId{" +
+                "accountHolder='" + accountHolder + '\'' +
+                ", accountNum='" + accountNum + '\'' +
+                '}';
+    }
 }

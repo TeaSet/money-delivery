@@ -22,6 +22,10 @@ public class Starter extends AbstractVerticle {
         router.post("/accounts").handler(accountMgmtController::createAccount);
         router.delete("/accounts").handler(accountMgmtController::removeAccount);
         router.post("/accounts/lock").handler(accountMgmtController::lockAccount);
+        router.post("/accounts/unlock").handler(accountMgmtController::unlockAccount);
+        router.post("/accounts/deposit").handler(accountMgmtController::deposit);
+        router.post("/accounts/withdraw").handler(accountMgmtController::withdraw);
+        router.post("/accounts/transfer").handler(accountMgmtController::transfer);
 
         return router;
     }

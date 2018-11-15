@@ -1,5 +1,6 @@
 package com.revolut.money.delivery
 
+import com.revolut.money.delivery.model.AccountId
 import com.revolut.money.delivery.service.impl.AccountSynchronizerImpl
 import spock.lang.Shared
 import spock.lang.Specification
@@ -13,7 +14,7 @@ class AccountSynchronizerImplTest extends Specification {
 
     def "test account locking"() {
         setup:
-        def accountId = 100L
+        def accountId = new AccountId("My_Name", 100)
         when:
         synchronizer.lockCurrentAccount(accountId)
         then:
@@ -22,7 +23,7 @@ class AccountSynchronizerImplTest extends Specification {
 
     def "test account unlocking"() {
         setup:
-        def accountId = 200L
+        def accountId = new AccountId("His_Name", 200)
         synchronizer.lockCurrentAccount(accountId)
         when:
         synchronizer.unlockCurrentAccount(accountId)
@@ -32,8 +33,8 @@ class AccountSynchronizerImplTest extends Specification {
 
     def "test when two account don't block"() {
         setup:
-        def id1 = 1L
-        def id2 = 2L
+        def id1 = new AccountId("My_Name")
+        def id2 = new AccountId("His_Name")
         synchronizer.lockCurrentAccount(id1)
         synchronizer.lockCurrentAccount(id2)
         def count1 = 0, count2 = 0, tasks = []
@@ -50,8 +51,8 @@ class AccountSynchronizerImplTest extends Specification {
 
     def "test for one and two accounts that do not block each other"() {
         setup:
-        def id1 = 1L
-        def id2 = 2L
+        def id1 = new AccountId("My_Name")
+        def id2 = new AccountId("His_Name")
         synchronizer.lockCurrentAccount(id1)
         synchronizer.lockCurrentAccount(id2)
         def count1 = 0, count2 = 0, count3 = 0, tasks = []
@@ -70,12 +71,12 @@ class AccountSynchronizerImplTest extends Specification {
 
     def "test associative of lockAction method"() {
         setup:
-        def id1 = 1L
-        def id2 = 2L
-        def id3 = 3L
-        synchronizer.lockCurrentAccount(1L)
-        synchronizer.lockCurrentAccount(2L)
-        synchronizer.lockCurrentAccount(3L)
+        def id1 = new AccountId("My_Name")
+        def id2 = new AccountId("His_Name")
+        def id3 = new AccountId("Her_Name")
+        synchronizer.lockCurrentAccount(id1)
+        synchronizer.lockCurrentAccount(id2)
+        synchronizer.lockCurrentAccount(id3)
         def counter = 100, tasks = []
         when:
         1000.times {

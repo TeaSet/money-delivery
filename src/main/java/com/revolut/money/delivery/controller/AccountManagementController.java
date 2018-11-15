@@ -6,6 +6,7 @@ import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
 import com.revolut.money.delivery.service.api.AccountService;
+import com.revolut.money.delivery.service.api.TransactionService;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -15,8 +16,11 @@ public class AccountManagementController {
 
     private final AccountService accountService;
 
+    private final TransactionService transactionService;
+
     public AccountManagementController() {
         accountService = Guice.createInjector(new ApplicationInjectorModule()).getInstance(AccountService.class);
+        transactionService = Guice.createInjector(new ApplicationInjectorModule()).getInstance(TransactionService.class);
     }
 
     public void getAccount(RoutingContext context) {
@@ -68,6 +72,58 @@ public class AccountManagementController {
         AccountId accountId = new AccountId(accountHolder, accountNum);
         accountService.lockAccount(accountId);
         response(context, 200, Json.encodePrettily(accountId));
+    }
+
+    public void unlockAccount(RoutingContext context) {
+        String accountHolder = context.request().getParam("accountHolder");
+        int accountNum = Integer.valueOf(context.request().getParam("accountNum"));
+
+        AccountId accountId = new AccountId(accountHolder, accountNum);
+        accountService.unlockAccount(accountId);
+        response(context, 200, Json.encodePrettily(accountId));
+    }
+
+    public void deposit(RoutingContext context) {
+        JsonObject bodyAsJson = context.getBodyAsJson();
+        String accountHolder = bodyAsJson.getString("accountHolder");
+        int accountNum = bodyAsJson.getInteger("accountNum");
+        AccountId accountId = new AccountId(accountHolder, accountNum);
+        double amount = bodyAsJson.getDouble("amount");
+        String currency = bodyAsJson.getString("currency");
+        Money moneyToPut = new Money(amount, currency);
+        transactionService.deposit(accountId, moneyToPut);
+        response(context, 202, Json.encodePrettily(moneyToPut));
+    }
+
+    public void withdraw(RoutingContext context) {
+        JsonObject bodyAsJson = context.getBodyAsJson();
+        String accountHolder = bodyAsJson.getString("accountHolder");
+        int accountNum = bodyAsJson.getInteger("accountNum");
+        AccountId accountId = new AccountId(accountHolder, accountNum);
+        double amount = bodyAsJson.getDouble("amount");
+        String currency = bodyAsJson.getString("currency");
+        Money moneyToFetch = new Money(amount, currency);
+        transactionService.withdraw(accountId, moneyToFetch);
+        response(context, 202, Json.encodePrettily(moneyToFetch));
+    }
+
+    public void transfer(RoutingContext context) {
+        JsonObject bodyAsJson = context.getBodyAsJson();
+
+        String fromAccountHolder = bodyAsJson.getString("fromAccountHolder");
+        int fromAccountNum = bodyAsJson.getInteger("fromAccountNum");
+        AccountId fromAccountId = new AccountId(fromAccountHolder, fromAccountNum);
+
+        String toAccountHolder = bodyAsJson.getString("toAccountHolder");
+        int toAccountNum = bodyAsJson.getInteger("toAccountNum");
+        AccountId toAccountId = new AccountId(toAccountHolder, toAccountNum);
+
+        double amount = bodyAsJson.getDouble("amount");
+        String currency = bodyAsJson.getString("currency");
+        Money moneyToTransfer = new Money(amount, currency);
+
+        transactionService.transfer(fromAccountId, toAccountId, moneyToTransfer);
+        response(context, 202, Json.encodePrettily(moneyToTransfer));
     }
 
     private void response(RoutingContext routingContext, int httpCode, String body) {
