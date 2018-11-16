@@ -11,7 +11,6 @@ import com.revolut.money.delivery.service.api.TransactionService;
 
 public class TransactionServiceImpl implements TransactionService {
 
-    private DataStore dataStore;
     private AccountSynchronizer accountSynchronizer;
     private AccountService accountService;
 
@@ -21,18 +20,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Inject
-    public void setDataStore(DataStore dataStore) {
-        this.dataStore = dataStore;
-    }
-
-    @Inject
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @Override
     public Money getCurrentBalance(AccountId id) {
-        Account account = dataStore.getAccount(id);
+        Account account = accountService.getAccount(id);
         return account.getMoney();
     }
 
@@ -41,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (moneyToPut.getAmount() < 0) {
             throw new RuntimeException("You try to deposit wrong format of money");
         } else {
-            Account account = dataStore.getAccount(id);
+            Account account = accountService.getAccount(id);
             accountSynchronizer.lockAction(id, () -> {
                 checkLock(id);
                 Money money = getCurrentBalance(id);
@@ -56,10 +50,11 @@ public class TransactionServiceImpl implements TransactionService {
         if (moneyToFetch.getAmount() < 0) {
             throw new RuntimeException("You try to withdraw wrong format of money");
         } else {
-            Account account = dataStore.getAccount(id);
+            Account account = accountService.getAccount(id);
             accountSynchronizer.lockAction(id, () -> {
                 checkLock(id);
                 Money money = getCurrentBalance(id);
+                //TODO check if you do not have enough money
                 Money newBalance = new Money(money.getAmount() - moneyToFetch.getAmount(), money.getCurrencyCode());
                 account.setMoney(newBalance);
             });
@@ -81,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private void checkLock(AccountId accountId) {
-        Account account = dataStore.getAccount(accountId);
+        Account account = accountService.getAccount(accountId);
         if (account.isLocked()) {
             throw new RuntimeException("Your account is locked");
         }
