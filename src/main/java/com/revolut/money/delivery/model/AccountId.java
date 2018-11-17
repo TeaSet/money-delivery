@@ -1,10 +1,12 @@
 package com.revolut.money.delivery.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
+@ToString
 public class AccountId {
 
     private static final AtomicInteger COUNTER = new AtomicInteger(1);
@@ -20,13 +22,5 @@ public class AccountId {
     public AccountId(String accountHolder, int accountNum) {
         this.accountHolder = accountHolder;
         this.accountNum = accountNum;
-    }
-
-    @Override
-    public String toString() {
-        return "AccountId{" +
-                "accountHolder='" + accountHolder + '\'' +
-                ", accountNum='" + accountNum + '\'' +
-                '}';
     }
 }
