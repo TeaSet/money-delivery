@@ -79,4 +79,9 @@ class AccountServiceImplTest extends Specification {
         then:
         !createdAccount.locked
     }
+
+    def cleanupSpec() {
+        accountService.clearAll()
+    }
+
 }
