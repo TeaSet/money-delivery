@@ -16,8 +16,12 @@ class AccountServiceImplTest extends Specification {
     @Shared
     def money = new Money(100.5, "USD")
 
+    @Shared
+    def dataStore = new DataStoreImpl()
+
     def setupSpec() {
-        accountService.setDataStore(new DataStoreImpl())
+        dataStore.cleanup()
+        accountService.setDataStore(dataStore)
     }
 
     def "create new account"() {
@@ -79,9 +83,4 @@ class AccountServiceImplTest extends Specification {
         then:
         !createdAccount.locked
     }
-
-    def cleanupSpec() {
-        accountService.clearAll()
-    }
-
 }
