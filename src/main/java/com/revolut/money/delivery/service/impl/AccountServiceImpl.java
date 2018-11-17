@@ -48,8 +48,4 @@ public class AccountServiceImpl implements AccountService {
         Account account = getAccount(accountId);
         account.setLocked(false);
     }
-
-    public void clearAll() {
-        dataStore.cleanup();
-    }
 }

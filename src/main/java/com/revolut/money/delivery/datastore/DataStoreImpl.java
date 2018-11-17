@@ -25,9 +25,4 @@ public class DataStoreImpl implements DataStore {
     public void remove(AccountId accountId) {
         accounts.remove(accountId);
     }
-
-    @Override
-    public void cleanup() {
-        accounts.clear();
-    }
 }

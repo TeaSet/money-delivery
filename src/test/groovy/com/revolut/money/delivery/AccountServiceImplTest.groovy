@@ -16,12 +16,8 @@ class AccountServiceImplTest extends Specification {
     @Shared
     def money = new Money(100.5, "USD")
 
-    @Shared
-    def dataStore = new DataStoreImpl()
-
     def setupSpec() {
-        dataStore.cleanup()
-        accountService.setDataStore(dataStore)
+        accountService.setDataStore(new DataStoreImpl())
     }
 
     def "create new account"() {

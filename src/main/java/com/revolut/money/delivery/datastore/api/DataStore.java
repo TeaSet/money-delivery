@@ -10,6 +10,4 @@ public interface DataStore {
     Account getAccount(AccountId accountId);
 
     void remove(AccountId accountId);
-
-    void cleanup();
 }
