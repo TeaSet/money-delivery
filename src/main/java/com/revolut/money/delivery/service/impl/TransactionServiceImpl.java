@@ -1,7 +1,6 @@
 package com.revolut.money.delivery.service.impl;
 
 import com.google.inject.Inject;
-import com.revolut.money.delivery.datastore.api.DataStore;
 import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
@@ -54,7 +53,9 @@ public class TransactionServiceImpl implements TransactionService {
             accountSynchronizer.lockAction(id, () -> {
                 checkLock(id);
                 Money money = getCurrentBalance(id);
-                //TODO check if you do not have enough money
+                if (money.getAmount() < moneyToFetch.getAmount()) {
+                    throw new RuntimeException("Your balance is not enough to withdraw " + moneyToFetch.getAmount());
+                }
                 Money newBalance = new Money(money.getAmount() - moneyToFetch.getAmount(), money.getCurrencyCode());
                 account.setMoney(newBalance);
             });

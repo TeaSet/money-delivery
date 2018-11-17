@@ -96,6 +96,17 @@ class TransactionServiceImplTest extends Specification {
         ex.message == "You try to withdraw wrong format of money"
     }
 
+    def "withdraw money that more than your current balance"() {
+        setup:
+        Money money = new Money(100.0, "USD")
+        AccountId accountId = accountService.createAccount("My_Name", money)
+        when:
+        transactionService.withdraw(accountId, new Money(101.0, "USD"))
+        then:
+        RuntimeException ex = thrown()
+        ex.message.contains("Your balance is not enough to withdraw")
+    }
+
     def "withdraw money from locked account"() {
         setup:
         Money money = new Money(100.0, "USD")

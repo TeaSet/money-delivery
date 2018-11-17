@@ -35,19 +35,16 @@ public class Starter extends AbstractVerticle {
 
         Router router = getRoutes();
 
-        vertx
-                .createHttpServer()
-                .requestHandler(router::accept)
-                .listen(
-                        config().getInteger("http.port", 8080),
-                        result -> {
-                            if (result.succeeded()) {
-                                fut.complete();
-                            } else {
-                                fut.fail(result.cause());
-                            }
-                        }
-                );
+        vertx.createHttpServer().requestHandler(router::accept)
+                                .listen(config().getInteger("http.port", 8080),
+                                    result -> {
+                                        if (result.succeeded()) {
+                                            fut.complete();
+                                         } else {
+                                            fut.fail(result.cause());
+                                         }
+                                    }
+                                );
     }
 
     public static void main(String[] args) {
