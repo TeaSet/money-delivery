@@ -1,4 +1,4 @@
-package com.revolut.money.delivery
+package com.revolut.money.delivery.service
 
 import com.revolut.money.delivery.model.Money
 import com.revolut.money.delivery.service.impl.ExchangeServiceImpl

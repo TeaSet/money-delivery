@@ -1,4 +1,4 @@
-package com.revolut.money.delivery
+package com.revolut.money.delivery.service
 
 import com.revolut.money.delivery.model.AccountId
 import com.revolut.money.delivery.service.impl.AccountSynchronizerImpl
