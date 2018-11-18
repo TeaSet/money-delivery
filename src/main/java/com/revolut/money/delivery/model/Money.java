@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @ToString
 public class Money {
 
-    private double amount;
+    private BigDecimal amount;
     private String currencyCode;
 
     public Money() {
-        this.amount = 0.0;
+        this.amount = new BigDecimal("0.0");
         this.currencyCode = "USD";
     }
 }

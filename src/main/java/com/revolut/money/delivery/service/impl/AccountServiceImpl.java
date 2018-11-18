@@ -1,5 +1,6 @@
 package com.revolut.money.delivery.service.impl;
 
+import com.google.inject.Singleton;
 import com.revolut.money.delivery.datastore.api.DataStore;
 import com.revolut.money.delivery.model.Account;
 import com.revolut.money.delivery.model.AccountId;
@@ -9,6 +10,7 @@ import com.revolut.money.delivery.service.api.AccountService;
 import javax.inject.Inject;
 
 
+@Singleton
 public class AccountServiceImpl implements AccountService {
 
     private DataStore dataStore;

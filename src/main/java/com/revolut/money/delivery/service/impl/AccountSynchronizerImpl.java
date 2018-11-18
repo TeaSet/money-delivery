@@ -1,5 +1,6 @@
 package com.revolut.money.delivery.service.impl;
 
+import com.google.inject.Singleton;
 import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.service.api.AccountSynchronizer;
 
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
+@Singleton
 public class AccountSynchronizerImpl implements AccountSynchronizer {
 
     Map<AccountId, ReentrantLock> lockMap = new ConcurrentHashMap<>();

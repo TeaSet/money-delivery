@@ -5,7 +5,6 @@ import com.revolut.money.delivery.model.Account
 import com.revolut.money.delivery.model.AccountId
 import com.revolut.money.delivery.model.Money
 import com.revolut.money.delivery.service.impl.AccountServiceImpl
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -21,7 +20,6 @@ class AccountServiceImplTest extends Specification {
         accountService.setDataStore(new DataStoreImpl())
     }
 
-    @Ignore
     def "create new account"() {
         when:
         def accountId = accountService.createAccount("My_Name", money)
@@ -34,7 +32,6 @@ class AccountServiceImplTest extends Specification {
         account.money.amount == money.amount
     }
 
-    @Ignore
     def "get existing account"() {
         setup:
         def currentAccount = new Account()

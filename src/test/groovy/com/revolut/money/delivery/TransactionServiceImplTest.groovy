@@ -5,6 +5,7 @@ import com.revolut.money.delivery.model.AccountId
 import com.revolut.money.delivery.model.Money
 import com.revolut.money.delivery.service.impl.AccountServiceImpl
 import com.revolut.money.delivery.service.impl.AccountSynchronizerImpl
+import com.revolut.money.delivery.service.impl.ExchangeServiceImpl
 import com.revolut.money.delivery.service.impl.TransactionServiceImpl
 import spock.lang.Shared
 import spock.lang.Specification
@@ -20,10 +21,14 @@ class TransactionServiceImplTest extends Specification {
     @Shared
     def accountSynchronizer = new AccountSynchronizerImpl()
 
+    @Shared
+    def exchangeService = new ExchangeServiceImpl()
+
     def setupSpec() {
         accountService.setDataStore(new DataStoreImpl())
         transactionService.setAccountService(accountService)
         transactionService.setAccountSynchronizer(accountSynchronizer)
+        transactionService.setExchangeService(exchangeService)
     }
 
     def "get balance of created account"() {
@@ -40,10 +45,10 @@ class TransactionServiceImplTest extends Specification {
 
     def "deposit some money to account"() {
         setup:
-        Money money = new Money(100.0, "USD")
+        Money money = new Money(BigDecimal.valueOf(100), "USD")
         AccountId accountId = accountService.createAccount("My_Name", money)
         when:
-        transactionService.deposit(accountId, new Money(50, "USD"))
+        transactionService.deposit(accountId, new Money(BigDecimal.valueOf(50), "USD"))
         Money newBalance = transactionService.getCurrentBalance(accountId)
         then:
         newBalance.amount == money.amount + 50.0
@@ -78,7 +83,7 @@ class TransactionServiceImplTest extends Specification {
         Money money = new Money(100.0, "USD")
         AccountId accountId = accountService.createAccount("My_Name", money)
         when:
-        transactionService.withdraw(accountId, new Money(50, "USD"))
+        transactionService.withdraw(accountId, new Money(50.0, "USD"))
         Money newBalance = transactionService.getCurrentBalance(accountId)
         then:
         newBalance.amount == money.amount - 50.0

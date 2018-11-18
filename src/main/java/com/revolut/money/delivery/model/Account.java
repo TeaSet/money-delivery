@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 
 @Data
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class Account {
         this.isLocked = false;
     }
 
-    public Account(String accountHolder, double amount, String currencyCode) {
+    public Account(String accountHolder, BigDecimal amount, String currencyCode) {
         this.accountId = new AccountId(accountHolder);
         this.money = new Money(amount, currencyCode);
         this.isLocked = false;
