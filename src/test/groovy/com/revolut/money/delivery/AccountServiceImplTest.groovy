@@ -65,7 +65,7 @@ class AccountServiceImplTest extends Specification {
         when:
         accountService.getAccount(id)
         then:
-        noExceptionThrown()
+        thrown(RuntimeException)
     }
 
     def "lock-unlock and get account"() {

@@ -20,11 +20,15 @@ public class DataStoreImpl implements DataStore {
 
     @Override
     public Account getAccount(AccountId accountId) {
+        if (!accounts.containsKey(accountId))
+            throw new RuntimeException("Account " + accountId + " is not found");
         return accounts.get(accountId);
     }
 
     @Override
     public void remove(AccountId accountId) {
+        if (!accounts.containsKey(accountId))
+            throw new RuntimeException("Account " + accountId + " has already been removed");
         accounts.remove(accountId);
     }
 }
