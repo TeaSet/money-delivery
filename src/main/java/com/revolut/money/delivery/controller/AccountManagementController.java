@@ -7,6 +7,7 @@ import com.revolut.money.delivery.model.AccountId;
 import com.revolut.money.delivery.model.Money;
 import com.revolut.money.delivery.service.api.AccountService;
 import com.revolut.money.delivery.service.api.TransactionService;
+import com.revolut.money.delivery.utils.JsonUtils;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -43,7 +44,7 @@ public class AccountManagementController {
     public void createAccount(RoutingContext context) {
         JsonObject bodyAsJson = context.getBodyAsJson();
         String actHolder = bodyAsJson.getString("holder");
-        BigDecimal amount = BigDecimal.valueOf(bodyAsJson.getDouble("amount"));
+        BigDecimal amount = JsonUtils.getBigDecimalValue(bodyAsJson.getValue("amount"));
         String currencyCode = bodyAsJson.getString("currencyCode");
 
         Money money = new Money(amount, currencyCode);
@@ -90,7 +91,7 @@ public class AccountManagementController {
         String accountHolder = bodyAsJson.getString("accountHolder");
         int accountNum = bodyAsJson.getInteger("accountNum");
         AccountId accountId = new AccountId(accountHolder, accountNum);
-        BigDecimal amount = BigDecimal.valueOf(bodyAsJson.getDouble("amount"));
+        BigDecimal amount = JsonUtils.getBigDecimalValue(bodyAsJson.getValue("amount"));
         String currency = bodyAsJson.getString("currency");
         Money moneyToPut = new Money(amount, currency);
         transactionService.deposit(accountId, moneyToPut);
@@ -102,7 +103,7 @@ public class AccountManagementController {
         String accountHolder = bodyAsJson.getString("accountHolder");
         int accountNum = bodyAsJson.getInteger("accountNum");
         AccountId accountId = new AccountId(accountHolder, accountNum);
-        BigDecimal amount = BigDecimal.valueOf(bodyAsJson.getDouble("amount"));
+        BigDecimal amount = JsonUtils.getBigDecimalValue(bodyAsJson.getValue("amount"));
         String currency = bodyAsJson.getString("currency");
         Money moneyToFetch = new Money(amount, currency);
         transactionService.withdraw(accountId, moneyToFetch);
@@ -120,7 +121,7 @@ public class AccountManagementController {
         int toAccountNum = bodyAsJson.getInteger("toAccountNum");
         AccountId toAccountId = new AccountId(toAccountHolder, toAccountNum);
 
-        BigDecimal amount = BigDecimal.valueOf(bodyAsJson.getDouble("amount"));
+        BigDecimal amount = JsonUtils.getBigDecimalValue(bodyAsJson.getValue("amount"));
         String currency = bodyAsJson.getString("currency");
         Money moneyToTransfer = new Money(amount, currency);
 

@@ -37,24 +37,27 @@ public class AccountSynchronizerImpl implements AccountSynchronizer {
 
     @Override
     public void lockAction(AccountId accountId1, AccountId accountId2, Runnable runnable) {
-        boolean isLocked = false;
         lockCurrentAccount(accountId1);
         ReentrantLock lock1 = lockMap.get(accountId1);
 
         lockCurrentAccount(accountId2);
         ReentrantLock lock2 = lockMap.get(accountId2);
-        do {
-            if (lock1.tryLock())
-                if (lock2.tryLock())
-                    isLocked = true;
-                else
+
+        while (true) {
+            if (lock1.tryLock()) {
+                try {
+                    if (lock2.tryLock()) {
+                        try {
+                            runnable.run();
+                            break;
+                        } finally {
+                            lock2.unlock();
+                        }
+                    }
+                } finally {
                     lock1.unlock();
-        } while (!isLocked);
-        try {
-            runnable.run();
-        } finally {
-            lock2.unlock();
-            lock1.unlock();
+                }
+            }
         }
     }
 }
