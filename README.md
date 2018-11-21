@@ -18,7 +18,7 @@ All calls should start with `http://localhost:8080/accounts`
 ### Examples of usage: ###
 
 * Create the account:
-`POST { "holder": "TommyShelby", "amount": 768.4, "currencyCode": "RUB" }`
+`POST { "accountHolder": "TommyShelby", "amount": 768.4, "currency": "RUB" }`
 
 * Get the account:
 `GET http://localhost:8080/accounts?accountHolder=TommyShelby&accountNum=1`
