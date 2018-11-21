@@ -1,6 +1,7 @@
 package com.revolut.money.delivery;
 
 import com.revolut.money.delivery.controller.AccountManagementController;
+import com.revolut.money.delivery.controller.validation.RequestValidator;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
@@ -19,14 +20,32 @@ public class Starter extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.route("/accounts/*").handler(BodyHandler.create());
 
-        router.get("/accounts").handler(accountMgmtController::getAccount);
-        router.post("/accounts").handler(accountMgmtController::createAccount);
-        router.delete("/accounts").handler(accountMgmtController::removeAccount);
+        router.get("/accounts")
+                .handler(RequestValidator.getDeleteAccountValidator())
+                .handler(accountMgmtController::getAccount);
+
+        router.post("/accounts")
+                .handler(RequestValidator.createNewAccountValidator())
+                .handler(accountMgmtController::createAccount);
+
+        router.delete("/accounts")
+                .handler(RequestValidator.getDeleteAccountValidator())
+                .handler(accountMgmtController::removeAccount);
+
         router.post("/accounts/lock").handler(accountMgmtController::lockAccount);
         router.post("/accounts/unlock").handler(accountMgmtController::unlockAccount);
-        router.post("/accounts/deposit").handler(accountMgmtController::deposit);
-        router.post("/accounts/withdraw").handler(accountMgmtController::withdraw);
-        router.post("/accounts/transfer").handler(accountMgmtController::transfer);
+
+        router.post("/accounts/deposit")
+                .handler(RequestValidator.depositWithdrawValidator())
+                .handler(accountMgmtController::deposit);
+
+        router.post("/accounts/withdraw")
+                .handler(RequestValidator.depositWithdrawValidator())
+                .handler(accountMgmtController::withdraw);
+
+        router.post("/accounts/transfer")
+                .handler(RequestValidator.transferValidator())
+                .handler(accountMgmtController::transfer);
 
         return router;
     }

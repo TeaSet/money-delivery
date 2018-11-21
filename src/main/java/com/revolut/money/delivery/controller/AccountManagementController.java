@@ -43,9 +43,9 @@ public class AccountManagementController {
 
     public void createAccount(RoutingContext context) {
         JsonObject bodyAsJson = context.getBodyAsJson();
-        String actHolder = bodyAsJson.getString("holder");
+        String actHolder = bodyAsJson.getString("accountHolder");
         BigDecimal amount = JsonUtils.getBigDecimalValue(bodyAsJson.getValue("amount"));
-        String currencyCode = bodyAsJson.getString("currencyCode");
+        String currencyCode = bodyAsJson.getString("currency");
 
         Money money = new Money(amount, currencyCode);
 
