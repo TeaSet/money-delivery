@@ -58,6 +58,7 @@ public class AccountSynchronizerImpl implements AccountSynchronizer {
                     lock1.unlock();
                 }
             }
+            //Is it necessary to add thread sleep to prevent livelock?
         }
     }
 }
