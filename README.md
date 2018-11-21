@@ -26,7 +26,7 @@ All calls should start with `http://localhost:8080/accounts`
 * Delete the account:
 `DELETE http://localhost:8080/accounts?accountHolder=TommyShelby&accountNum=1`
 
-* Deposit some money `/accounts/depost`:
+* Deposit some money `/accounts/deposit`:
 `POST { "accountHolder" : "TommyShelby", "accountNum" : 1, "amount": 150.4, "currency": "RUB" }`
 
 * Withdraw some money `/accounts/withdraw`:
