@@ -15,7 +15,7 @@ uses in-memory data store.
 
 All calls should start with `http://localhost:8080/accounts`
 
-###Examples of usage: ###
+### Examples of usage: ###
 
 * Create the account:
 `POST { "holder": "TommyShelby", "amount": 768.4, "currencyCode": "RUB" }`
